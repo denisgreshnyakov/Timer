@@ -5,9 +5,62 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>25+5 Clock</title>
   </head>
-  <body></body>
+  <body>
+    <div class="container">
+      <div class="main-title">25 + 5 Clock</div>
+      <div class="break-session">
+        <div class="label label-right" id="break-label">
+          Break Length
+
+          <div class="length">
+            <button id="break-decrement">
+              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            <div id="break-length">5</div>
+            <button id="break-increment">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="label" id="session-label">
+          Session Length
+
+          <div class="length">
+            <button id="session-decrement">
+              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            <div id="session-length">25</div>
+            <button id="session-increment">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="timer">
+        <div class="label" id="timer-label">Session</div>
+        <div id="time-left">25:00</div>
+      </div>
+      <div class="timer-control">
+        <button id="start_stop">
+          <i class="fa fa-play" aria-hidden="true"></i>
+          <i class="fa fa-pause" aria-hidden="true"></i>
+        </button>
+        <button id="reset">
+          <i class="fa fa-refresh" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="author">Coded by Denis</div>
+    </div>
+  </body>
   <script src="script.js"></script>
   <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
 </html>
