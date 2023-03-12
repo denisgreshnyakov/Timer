@@ -58,6 +58,10 @@ button {
   border-radius: 60px;
 }
 
+.lastMinute {
+  color: red;
+}
+
 .timer-control {
   text-align: center;
 }
