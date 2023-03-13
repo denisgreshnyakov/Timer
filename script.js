@@ -120,11 +120,13 @@ window.addEventListener("DOMContentLoaded", () => {
     clearInterval(timer);
     timeLeft.classList.remove("lastMinute");
     timerLabel.classList.remove("lastMinute");
+    timerLabel.innerHTML = "Session";
     left = null;
     pause = true;
     checkBreak = false;
     timerStarted = false;
     time.children[0].pause();
+    time.children[0].currentTime = 0;
   });
 
   const breakTimer = () => {};
