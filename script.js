@@ -32,7 +32,7 @@ window.addEventListener("DOMContentLoaded", () => {
     //проверка на паузу
     if (pause) {
       clearInterval(timer);
-      left = timeMinutes;
+      left = timeMinutes + 1;
       console.log(`Установка паузы`);
       console.log(`timeMinutes ${timeMinutes}`);
       console.log(`left ${left}`);
@@ -46,7 +46,7 @@ window.addEventListener("DOMContentLoaded", () => {
       console.log(`timeMinutes ${timeMinutes}`);
       console.log(`left ${left}`);
     } else {
-      timeMinutes = length * 60 - 1;
+      timeMinutes = length * 60;
       console.log("старт и нет предыдущего значения");
       console.log(`timeMinutes ${timeMinutes}`);
       console.log(`left ${left}`);
@@ -132,32 +132,74 @@ window.addEventListener("DOMContentLoaded", () => {
   const breakTimer = () => {};
 
   breakIncrement.addEventListener("click", () => {
-    if (breakLength.innerHTML < 60) {
+    if (
+      breakLength.innerHTML < 60 &&
+      ((!timerStarted && pause) || (timerStarted && pause))
+    ) {
       breakLength.innerHTML = ++breakLength.innerHTML;
+      if (breakLength.innerHTML < 10 && timerLabel.innerHTML === "Break") {
+        timeLeft.innerHTML = `0${breakLength.innerHTML}:00`;
+        left = breakLength.innerHTML * 60 + 1;
+      } else if (
+        breakLength.innerHTML >= 10 &&
+        timerLabel.innerHTML === "Break"
+      ) {
+        timeLeft.innerHTML = `${breakLength.innerHTML}:00`;
+        left = breakLength.innerHTML * 60 + 1;
+      }
     }
   });
   breakDecrement.addEventListener("click", () => {
-    if (breakLength.innerHTML > 1) {
+    if (
+      breakLength.innerHTML > 1 &&
+      ((!timerStarted && pause) || (timerStarted && pause))
+    ) {
       breakLength.innerHTML = --breakLength.innerHTML;
+      if (breakLength.innerHTML < 10 && timerLabel.innerHTML === "Break") {
+        timeLeft.innerHTML = `0${breakLength.innerHTML}:00`;
+        left = breakLength.innerHTML * 60 + 1;
+      } else if (
+        breakLength.innerHTML >= 10 &&
+        timerLabel.innerHTML === "Break"
+      ) {
+        timeLeft.innerHTML = `${breakLength.innerHTML}:00`;
+        left = breakLength.innerHTML * 60 + 1;
+      }
     }
   });
   sessionIncrement.addEventListener("click", () => {
-    if (sessionLength.innerHTML < 60) {
+    if (
+      sessionLength.innerHTML < 60 &&
+      ((!timerStarted && pause) || (timerStarted && pause))
+    ) {
       sessionLength.innerHTML = ++sessionLength.innerHTML;
-      if (sessionLength.innerHTML < 10) {
+      if (sessionLength.innerHTML < 10 && timerLabel.innerHTML === "Session") {
         timeLeft.innerHTML = `0${sessionLength.innerHTML}:00`;
-      } else {
+        left = sessionLength.innerHTML * 60 + 1;
+      } else if (
+        sessionLength.innerHTML >= 10 &&
+        timerLabel.innerHTML === "Session"
+      ) {
         timeLeft.innerHTML = `${sessionLength.innerHTML}:00`;
+        left = sessionLength.innerHTML * 60 + 1;
       }
     }
   });
   sessionDecrement.addEventListener("click", () => {
-    if (sessionLength.innerHTML > 1) {
+    if (
+      sessionLength.innerHTML > 1 &&
+      ((!timerStarted && pause) || (timerStarted && pause))
+    ) {
       sessionLength.innerHTML = --sessionLength.innerHTML;
-      if (sessionLength.innerHTML < 10) {
+      if (sessionLength.innerHTML < 10 && timerLabel.innerHTML === "Session") {
         timeLeft.innerHTML = `0${sessionLength.innerHTML}:00`;
-      } else {
+        left = sessionLength.innerHTML * 60 + 1;
+      } else if (
+        sessionLength.innerHTML >= 10 &&
+        timerLabel.innerHTML === "Session"
+      ) {
         timeLeft.innerHTML = `${sessionLength.innerHTML}:00`;
+        left = sessionLength.innerHTML * 60 + 1;
       }
     }
   });
