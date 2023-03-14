@@ -41,12 +41,12 @@ window.addEventListener("DOMContentLoaded", () => {
     timerLabel.innerHTML = label;
     //проверка на предыдущее значение
     if (left !== null) {
-      timeMinutes = left;
+      timeMinutes = left - 1;
       console.log("была пауза и есть предыдущее значение");
       console.log(`timeMinutes ${timeMinutes}`);
       console.log(`left ${left}`);
     } else {
-      timeMinutes = length * 60;
+      timeMinutes = length * 60 + 1;
       console.log("старт и нет предыдущего значения");
       console.log(`timeMinutes ${timeMinutes}`);
       console.log(`left ${left}`);
