@@ -32,7 +32,7 @@ window.addEventListener("DOMContentLoaded", () => {
     //проверка на паузу
     if (pause) {
       clearInterval(timer);
-      left = timeMinutes + 1;
+      left = timeMinutes;
       console.log(`Установка паузы`);
       console.log(`timeMinutes ${timeMinutes}`);
       console.log(`left ${left}`);
@@ -41,7 +41,7 @@ window.addEventListener("DOMContentLoaded", () => {
     timerLabel.innerHTML = label;
     //проверка на предыдущее значение
     if (left !== null) {
-      timeMinutes = left - 1;
+      timeMinutes = left;
       console.log("была пауза и есть предыдущее значение");
       console.log(`timeMinutes ${timeMinutes}`);
       console.log(`left ${left}`);
