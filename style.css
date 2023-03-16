@@ -12,7 +12,9 @@ body {
 .container {
   display: flex;
   flex-direction: column;
-  /* width: 330px; */
+  justify-content: center;
+  align-items: center;
+  width: 500px;
 }
 
 .main-title {
@@ -22,16 +24,17 @@ body {
 
 .break-session {
   display: flex;
+  justify-content: space-around;
+  align-items: center;
   text-align: center;
   margin-top: 20px;
+  width: 500px;
 }
 
 .label {
+  display: block;
   font-size: 30px;
-}
-
-.label-right {
-  margin-right: 50px;
+  width: 200px;
 }
 
 .length {
@@ -50,8 +53,10 @@ button {
 }
 
 .timer {
+  display: block;
+  width: 200px;
   margin: 20px;
-  padding: 20px 40px 20px 30px;
+  padding: 20px;
   font-size: 80px;
   text-align: center;
   border: 10px solid #0f3c3d;
@@ -69,4 +74,12 @@ button {
 .author {
   margin-top: 20px;
   text-align: center;
+}
+
+a,
+a:active,
+a:hover {
+  text-decoration: none;
+  color: red;
+  cursor: pointer;
 }

@@ -1,6 +1,7 @@
 window.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
+  //получение элементов на странице
   const breakLength = document.querySelector("#break-length");
   const sessionLength = document.querySelector("#session-length");
   const timeLeft = document.querySelector("#time-left");
@@ -15,55 +16,41 @@ window.addEventListener("DOMContentLoaded", () => {
   const startStop = document.querySelector("#start_stop");
   const reset = document.querySelector("#reset");
 
-  let timer;
-  let left = null;
-  let timeMinutes;
-  let pause = true;
-  let checkBreak = false;
-  let timerStarted = false;
+  //переменные для работы таймера
+  let timer; //переменная для таймера
+  let left = null; //переменная для записи оставшегося времени при паузе/запуске
+  let timeMinutes; // переменная для записи количества секунд
+  let pause = true; // логическая переменная для проверки паузы
+  let checkBreak = false; // логическая переменная для проверки перерыва
+  let timerStarted = false; // логическая переменная для проверки запуска таймера
 
-  const sessionTimer = (length, label) => {
+  //функция инициализации таймера
+  const initialTimer = (length, label) => {
     //проверка на паузу
     if (pause) {
       clearInterval(timer);
       left = timeMinutes;
-      console.log(`Установка паузы`);
-      console.log(`timeMinutes ${timeMinutes}`);
-      console.log(`left ${left}`);
       return;
     }
+    //меняем надпись перерыва/сессии
     timerLabel.innerHTML = label;
     //проверка на предыдущее значение
     if (left !== null) {
-      timeMinutes = left;
-      console.log("была пауза и есть предыдущее значение");
-      console.log(`timeMinutes ${timeMinutes}`);
-      console.log(`left ${left}`);
+      timeMinutes = left; // перезаписываем предыдущее значение
     } else {
-      timeMinutes = length * 60;
-      timerFunction();
-      console.log("старт и нет предыдущего значения");
-      console.log(`timeMinutes ${timeMinutes}`);
-      console.log(`left ${left}`);
+      timeMinutes = length * 60; // вычисляем количество секунд
+      timerFunction(); //запускаем функцию таймера для первой секунды
     }
-
+    // запускаем таймер
     timer = setInterval(timerFunction, 1000);
   };
 
-  startStop.addEventListener("click", () => {
-    pause = !pause;
-    timerStarted = true;
-    if (!checkBreak) {
-      sessionTimer(sessionLength.innerHTML, "Session");
-    } else {
-      sessionTimer(breakLength.innerHTML, "Break");
-    }
-  });
-
+  //функция выполняющаяся во время работы таймера
   const timerFunction = () => {
     let seconds = timeMinutes % 60;
     let minutes = (timeMinutes / 60) % 60;
 
+    //если время вышло, то завершаем работу, переходи в другой режим
     if (timeMinutes < 0) {
       clearInterval(timer);
       timeLeft.innerHTML = `0${Math.trunc(minutes)}:0${seconds}`;
@@ -75,12 +62,14 @@ window.addEventListener("DOMContentLoaded", () => {
         left = null;
       }
       if (!checkBreak) {
-        sessionTimer(sessionLength.innerHTML, "Session");
+        initialTimer(sessionLength.innerHTML, "Session");
       } else {
-        sessionTimer(breakLength.innerHTML, "Break");
+        initialTimer(breakLength.innerHTML, "Break");
       }
       return;
-    } else {
+    }
+    // иначе отображаем полученные данные, пока не истекло время
+    else {
       let strTimer = null;
       if (timeMinutes >= 600) {
         if (seconds < 10) {
@@ -107,40 +96,60 @@ window.addEventListener("DOMContentLoaded", () => {
     --timeMinutes;
   };
 
+  //нажатие паузы/старта
+  startStop.addEventListener("click", () => {
+    pause = !pause;
+    timerStarted = true;
+    if (!checkBreak) {
+      initialTimer(sessionLength.innerHTML, "Session");
+    } else {
+      initialTimer(breakLength.innerHTML, "Break");
+    }
+  });
+
+  //сброс всех параметров в значение по умолчанию
   reset.addEventListener("click", () => {
+    clearInterval(timer);
+    //сброс времени, длинны и наименования сессий по умолчанию
     breakLength.innerHTML = 5;
     sessionLength.innerHTML = 25;
     timeLeft.innerHTML = "25:00";
-    clearInterval(timer);
+    timerLabel.innerHTML = "Session";
+
+    //сброс стилей
     timeLeft.classList.remove("lastMinute");
     timerLabel.classList.remove("lastMinute");
-    timerLabel.innerHTML = "Session";
+
+    // сброс значений переменных в первоначальное состояние
     left = null;
     pause = true;
     checkBreak = false;
     timerStarted = false;
+
+    //остановка аудио таймера и установка значения звуковой дорожки на 0
     time.children[0].pause();
     time.children[0].currentTime = 0;
   });
 
-  const breakTimer = () => {};
+  // функция для установки новых значений при изменении длины сессии
+  const setNewValue = (value, mode) => {
+    if (value < 10 && timerLabel.innerHTML === mode) {
+      timeLeft.innerHTML = `0${value}:00`;
+      left = value * 60;
+    } else if (value >= 10 && timerLabel.innerHTML === mode) {
+      timeLeft.innerHTML = `${value}:00`;
+      left = value * 60;
+    }
+  };
 
+  // обработка событий при нажатии на кнопки изменения количества длины сессии
   breakIncrement.addEventListener("click", () => {
     if (
       breakLength.innerHTML < 60 &&
       ((!timerStarted && pause) || (timerStarted && pause))
     ) {
       breakLength.innerHTML = ++breakLength.innerHTML;
-      if (breakLength.innerHTML < 10 && timerLabel.innerHTML === "Break") {
-        timeLeft.innerHTML = `0${breakLength.innerHTML}:00`;
-        left = breakLength.innerHTML * 60;
-      } else if (
-        breakLength.innerHTML >= 10 &&
-        timerLabel.innerHTML === "Break"
-      ) {
-        timeLeft.innerHTML = `${breakLength.innerHTML}:00`;
-        left = breakLength.innerHTML * 60;
-      }
+      setNewValue(breakLength.innerHTML, "Break");
     }
   });
   breakDecrement.addEventListener("click", () => {
@@ -149,16 +158,7 @@ window.addEventListener("DOMContentLoaded", () => {
       ((!timerStarted && pause) || (timerStarted && pause))
     ) {
       breakLength.innerHTML = --breakLength.innerHTML;
-      if (breakLength.innerHTML < 10 && timerLabel.innerHTML === "Break") {
-        timeLeft.innerHTML = `0${breakLength.innerHTML}:00`;
-        left = breakLength.innerHTML * 60;
-      } else if (
-        breakLength.innerHTML >= 10 &&
-        timerLabel.innerHTML === "Break"
-      ) {
-        timeLeft.innerHTML = `${breakLength.innerHTML}:00`;
-        left = breakLength.innerHTML * 60;
-      }
+      setNewValue(breakLength.innerHTML, "Break");
     }
   });
   sessionIncrement.addEventListener("click", () => {
@@ -167,16 +167,7 @@ window.addEventListener("DOMContentLoaded", () => {
       ((!timerStarted && pause) || (timerStarted && pause))
     ) {
       sessionLength.innerHTML = ++sessionLength.innerHTML;
-      if (sessionLength.innerHTML < 10 && timerLabel.innerHTML === "Session") {
-        timeLeft.innerHTML = `0${sessionLength.innerHTML}:00`;
-        left = sessionLength.innerHTML * 60;
-      } else if (
-        sessionLength.innerHTML >= 10 &&
-        timerLabel.innerHTML === "Session"
-      ) {
-        timeLeft.innerHTML = `${sessionLength.innerHTML}:00`;
-        left = sessionLength.innerHTML * 60;
-      }
+      setNewValue(sessionLength.innerHTML, "Session");
     }
   });
   sessionDecrement.addEventListener("click", () => {
@@ -185,16 +176,7 @@ window.addEventListener("DOMContentLoaded", () => {
       ((!timerStarted && pause) || (timerStarted && pause))
     ) {
       sessionLength.innerHTML = --sessionLength.innerHTML;
-      if (sessionLength.innerHTML < 10 && timerLabel.innerHTML === "Session") {
-        timeLeft.innerHTML = `0${sessionLength.innerHTML}:00`;
-        left = sessionLength.innerHTML * 60;
-      } else if (
-        sessionLength.innerHTML >= 10 &&
-        timerLabel.innerHTML === "Session"
-      ) {
-        timeLeft.innerHTML = `${sessionLength.innerHTML}:00`;
-        left = sessionLength.innerHTML * 60;
-      }
+      setNewValue(sessionLength.innerHTML, "Session");
     }
   });
 });
